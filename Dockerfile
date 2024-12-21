@@ -20,8 +20,7 @@ WORKDIR /go/src
 COPY *.yaml *.go build/Makefile ./
 COPY cmd ./cmd/
 COPY internal ./internal/
-RUN go build -o bin/ cmd/pixelgw/pixelgw.go
-RUN go generate internal/api/pixelgw.go
+RUN make build
 
 FROM debian:bullseye
 WORKDIR /app
