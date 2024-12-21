@@ -31,9 +31,13 @@ type Hub struct {
 	tasks    chan *task
 }
 
-func NewHub(store *durable.Store) *Hub {
+func NewHub(store *durable.Store, appsDir string) *Hub {
+    log.Println(appsDir)
+	if appsDir == "" {
+		appsDir = "apps"
+	}
 	hub := &Hub{
-		Catalog:  catalog.NewCatalog(os.DirFS("apps")),
+		Catalog:  catalog.NewCatalog(os.DirFS(appsDir)),
 		store:    store,
 		clients:  make(map[*Client]*Channel),
 		channels: make(map[uuid.UUID]*Channel),
@@ -208,6 +212,7 @@ func (h *Hub) wsHandler(w http.ResponseWriter, r *http.Request) {
 	host, _, _ := net.SplitHostPort(r.RemoteAddr)
 	q := r.URL.Query()
 	id := q.Get("device")
+	log.Printf("DEVICE_ID: %s", id)
 
 	if len(id) == 0 {
 		log.Printf("%v: No device UUID specified", host)

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"log"
+	"os"
 
 	"github.com/canonical/sqlair"
 
@@ -33,7 +34,15 @@ func (tx *TX) Query(s *sqlair.Statement, inputArgs ...any) *sqlair.Query {
 }
 
 func NewStore() (*Store, error) {
-	sqldb, err := sql.Open("sqlite3", "./etc/cfg.db")
+	dbPath := os.Getenv("SQLITE_PATH")
+
+	if dbPath == "" {
+		dbPath = "./etc/cfg.db"
+	}
+
+	log.Println(dbPath)
+
+	sqldb, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return nil, err
 	}

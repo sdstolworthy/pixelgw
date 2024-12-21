@@ -15,7 +15,7 @@ func (s *Server) GetApplets(ctx context.Context, request GetAppletsRequestObject
 	var resp []App
 
 	keys := make([]string, 0)
-	for k, _ := range s.hub.Catalog.Manifests {
+	for k := range s.hub.Catalog.Manifests {
 		keys = append(keys, k)
 	}
 	slices.Sort(keys)

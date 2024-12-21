@@ -23,6 +23,9 @@ COPY internal ./internal/
 RUN make build
 
 FROM debian:bullseye
+COPY web/static ./static
+COPY apps/community/apps ./apps
+COPY apps/local/ ./apps
 WORKDIR /app
 RUN apt-get update \
     && apt-get install -y ca-certificates \
@@ -30,9 +33,6 @@ RUN apt-get update \
                           libwebpdemux2 \
                           libwebpmux3
 
-COPY web/static ./static
-COPY apps/community/apps ./apps
-COPY apps/local/ ./apps
 COPY --from=stage2 /go/src/bin/pixelgw ./bin/pixelgw
 CMD ["/app/bin/pixelgw"]
 

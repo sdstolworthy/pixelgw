@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/joe714/pixelgw/internal/api"
 	"github.com/joe714/pixelgw/internal/durable"
@@ -19,7 +20,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	hub := hub.NewHub(store)
+	hub := hub.NewHub(store, os.Getenv("APPS_DIR"))
 
 	svr := api.NewServer(hub, store)
 
